@@ -2,7 +2,7 @@
 
 Ripple is a terminal-based typing game built with ncurses in C. The game displays random words from a word list and allows users to practice their typing speed and accuracy directly in the terminal.
 
-![image](https://github.com/user-attachments/assets/4497e543-9ccb-4610-8584-abbb936d6282)
+![image](https://github.com/user-attachments/assets/8bbcfe3e-2a2a-407b-9be1-ea7144be457d)
 
 
 ## Features
