@@ -62,6 +62,31 @@ On macOS (using Homebrew):
 brew install ncurses
 ```
 
+# Running Ripple on Windows
+## Using MinGW (Recommended for Compilation)
+MinGW provides the GCC compiler needed to build the game.
+1. Step 1: Install MinGW and ncurses
+  - Download and install MinGW-w64 from Mingw-w64 SourceForge.
+  - During installation, select "MinGW-w64" as the architecture.
+  - Install the necessary libraries:
+  - Open a terminal (PowerShell or cmd) and install ncurses using pacman:
+  ```bash 
+  pacman -S mingw-w64-x86_64-ncurses
+  ```
+2. Step 2: Clone the Repository
+  ```bash
+  git clone https://github.com/SoraFujin/Ripple.git
+  cd Ripple
+  ```
+3. Step 3: Compile the Game
+  ```
+  gcc -o ripple.exe main.c -lncurses
+  ```
+4. Step 4: Run the Game
+  ```
+  ./ripple.exe
+  ```
+
 ### Compile the game
 ```bash
 gcc -o ripple main.c -lncurses
