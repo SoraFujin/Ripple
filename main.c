@@ -86,7 +86,7 @@ int main(void) {
     WINDOW *typing_win = newwin(max_y, max_x, 0, 0);
     keypad(typing_win, TRUE);
 
-    mvwprintw(typing_win, 1, max_x/2 - 10, "TERMINAL TYPING GAME");
+    mvwprintw(typing_win, 1, max_x/2 - 10, "RIPPLE TYPING GAME");
     mvwprintw(typing_win, 2, 2, "Type the words as they appear. Press ESC to quit.");
 
     srand(time(NULL));
