@@ -127,6 +127,10 @@ int main(void) {
     int typed_len = 0;
     int cursor_x = 2;
     int cursor_y = start_y;
+    
+    // Array to track if characters were typed correctly
+    char *correctness = malloc(text_len * sizeof(char));
+    memset(correctness, 0, text_len * sizeof(char)); // 0 = untyped, 1 = correct, 2 = incorrect
 
     wmove(typing_win, cursor_y, cursor_x);
     wrefresh(typing_win);
@@ -138,6 +142,7 @@ int main(void) {
         if (ch == KEY_BACKSPACE || ch == 127) {
             if (typed_len > 0) {
                 typed_len--;
+                correctness[typed_len] = 0; // Reset correctness for this position
 
                 cursor_x--;
                 if (cursor_x < 2) {
@@ -149,23 +154,26 @@ int main(void) {
                     }
                 }
 
-                int char_x = cursor_x;
-                int char_y = cursor_y;
-                int pos = 0;
-
-                wmove(typing_win, start_y, 2);
-                wattron(typing_win, COLOR_PAIR(1));
-
+                // Redraw the text with updated colors
                 for (int i = 0; i < text_len; i++) {
                     int disp_x = 2 + (i % (max_x - 4));
                     int disp_y = start_y + (i / (max_x - 4));
 
                     if (i < typed_len) {
-                        wattron(typing_win, COLOR_PAIR(2));
+                        if (correctness[i] == 1) {
+                            wattron(typing_win, COLOR_PAIR(2)); // Correct
+                        } else if (correctness[i] == 2) {
+                            wattron(typing_win, COLOR_PAIR(3)); // Incorrect
+                        }
                         mvwaddch(typing_win, disp_y, disp_x, display_text[i]);
                         wattroff(typing_win, COLOR_PAIR(2));
+                        wattroff(typing_win, COLOR_PAIR(3));
+                    } else if (i == typed_len) {
+                        wattron(typing_win, COLOR_PAIR(4)); // Current position
+                        mvwaddch(typing_win, disp_y, disp_x, display_text[i]);
+                        wattroff(typing_win, COLOR_PAIR(4));
                     } else {
-                        wattron(typing_win, COLOR_PAIR(1));
+                        wattron(typing_win, COLOR_PAIR(1)); // Untyped
                         mvwaddch(typing_win, disp_y, disp_x, display_text[i]);
                         wattroff(typing_win, COLOR_PAIR(1));
                     }
@@ -174,8 +182,8 @@ int main(void) {
         }
         else if (ch == '\n' || typed_len >= text_len) {
             int correct = 0;
-            for (int i = 0; i < typed_len && i < text_len; i++) {
-                if (display_text[i] == ch) {
+            for (int i = 0; i < typed_len; i++) {
+                if (correctness[i] == 1) {
                     correct++;
                 }
             }
@@ -190,6 +198,7 @@ int main(void) {
         }
         else if (typed_len < text_len) {
             int correct = (ch == display_text[typed_len]);
+            correctness[typed_len] = correct ? 1 : 2; // Store if this character was typed correctly
 
             int disp_x = 2 + (typed_len % (max_x - 4));
             int disp_y = start_y + (typed_len / (max_x - 4));
@@ -229,6 +238,7 @@ int main(void) {
         wrefresh(typing_win);
     }
 
+    free(correctness);
     delwin(typing_win);
     endwin();
     freeWordList(&wordList);
