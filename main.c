@@ -142,7 +142,6 @@ int main(void) {
     // Timer and WPM calculation variables
     time_t start_time, end_time;
     int words_typed = 0;
-    int correct_chars = 0;
 
     wmove(typing_win, cursor_y, cursor_x);
     wrefresh(typing_win);
